@@ -25,13 +25,17 @@ class ContextMenuRegion extends StatefulWidget {
 
 class _ContextMenuRegionState extends State<ContextMenuRegion> {
   bool shouldReact = false;
-  Duration pressTime = const Duration(seconds: 0);
+  Duration pressTime = const Duration(milliseconds: 0);
   @override
   Widget build(BuildContext context) {
     return Listener(
       onPointerDown: (e) {
         if (e.kind == PointerDeviceKind.mouse && e.buttons == 1) {
-          if (e.timeStamp.inSeconds - pressTime.inSeconds < 1) {
+          print('now :' + e.timeStamp.toString());
+          print('before :' + pressTime.toString());
+          print((e.timeStamp.inMilliseconds - pressTime.inMilliseconds)
+              .toString());
+          if (e.timeStamp.inMilliseconds - pressTime.inMilliseconds < 500) {
             shouldReact = true;
           } else {
             pressTime = e.timeStamp;
@@ -41,7 +45,7 @@ class _ContextMenuRegionState extends State<ContextMenuRegion> {
       onPointerUp: (e) async {
         if (!shouldReact) return;
 
-        pressTime = const Duration(seconds: 0);
+        pressTime = const Duration(milliseconds: 0);
         shouldReact = false;
 
         final position = Offset(
