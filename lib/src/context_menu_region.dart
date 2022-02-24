@@ -28,29 +28,17 @@ class _ContextMenuRegionState extends State<ContextMenuRegion> {
   Duration pressTime = const Duration(milliseconds: 0);
   @override
   Widget build(BuildContext context) {
-    return Listener(
-      onPointerDown: (e) {
-        if (e.kind == PointerDeviceKind.mouse && e.buttons == 1) {
-          print('now :' + e.timeStamp.toString());
-          print('before :' + pressTime.toString());
-          print((e.timeStamp.inMilliseconds - pressTime.inMilliseconds)
-              .toString());
-          if (e.timeStamp.inMilliseconds - pressTime.inMilliseconds < 500) {
-            shouldReact = true;
-          } else {
-            pressTime = e.timeStamp;
-          }
-        }
-      },
-      onPointerUp: (e) async {
-        if (!shouldReact) return;
-
-        pressTime = const Duration(milliseconds: 0);
-        shouldReact = false;
-
+    return GestureDetector(
+      onDoubleTap: () {},
+      onDoubleTapDown: (e) async {
+        print('double tap');
+        // final position = Offset(
+        //   e.position.dx + widget.menuOffset.dx,
+        //   e.position.dy + widget.menuOffset.dy,
+        // );
         final position = Offset(
-          e.position.dx + widget.menuOffset.dx,
-          e.position.dy + widget.menuOffset.dy,
+          e.globalPosition.dx + widget.menuOffset.dx,
+          e.globalPosition.dy + widget.menuOffset.dy,
         );
 
         final selectedItem = await showContextMenu(
@@ -69,5 +57,47 @@ class _ContextMenuRegionState extends State<ContextMenuRegion> {
       },
       child: widget.child,
     );
+
+    // return Listener(
+    //   onPointerDown: (e) {
+    //     if (e.kind == PointerDeviceKind.mouse && e.buttons == 1) {
+    //       print('now :' + e.timeStamp.toString());
+    //       print('before :' + pressTime.toString());
+    //       print((e.timeStamp.inMilliseconds - pressTime.inMilliseconds)
+    //           .toString());
+    //       if (e.timeStamp.inMilliseconds - pressTime.inMilliseconds < 500) {
+    //         shouldReact = true;
+    //       } else {
+    //         pressTime = e.timeStamp;
+    //       }
+    //     }
+    //   },
+    //   onPointerUp: (e) async {
+    //     if (!shouldReact) return;
+    //
+    //     pressTime = const Duration(milliseconds: 0);
+    //     shouldReact = false;
+    //
+    //     final position = Offset(
+    //       e.position.dx + widget.menuOffset.dx,
+    //       e.position.dy + widget.menuOffset.dy,
+    //     );
+    //
+    //     final selectedItem = await showContextMenu(
+    //       ShowMenuArgs(
+    //         MediaQuery.of(context).devicePixelRatio,
+    //         position,
+    //         widget.menuItems,
+    //       ),
+    //     );
+    //
+    //     if (selectedItem != null) {
+    //       widget.onItemSelected?.call(selectedItem);
+    //     } else {
+    //       widget.onDismissed?.call();
+    //     }
+    //   },
+    //   child: widget.child,
+    // );
   }
 }
