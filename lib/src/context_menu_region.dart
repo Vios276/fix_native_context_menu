@@ -11,6 +11,7 @@ class ContextMenuRegion extends StatefulWidget {
     this.onItemSelected,
     this.onDismissed,
     this.menuOffset = Offset.zero,
+    this.onDrag,
   }) : super(key: key);
 
   final Widget child;
@@ -18,6 +19,7 @@ class ContextMenuRegion extends StatefulWidget {
   final Offset menuOffset;
   final void Function(MenuItem item)? onItemSelected;
   final VoidCallback? onDismissed;
+  final GestureDragStartCallback? onDrag;
 
   @override
   _ContextMenuRegionState createState() => _ContextMenuRegionState();
@@ -29,6 +31,7 @@ class _ContextMenuRegionState extends State<ContextMenuRegion> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onPanStart: widget.onDrag,
       onDoubleTap: () {},
       onDoubleTapDown: (e) async {
         print('double tap');

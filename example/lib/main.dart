@@ -24,6 +24,9 @@ class _AppState extends State<App> {
     return MaterialApp(
       home: Scaffold(
         body: ContextMenuRegion(
+          onDrag: (_) {
+            windowManager.startDragging();
+          },
           onDismissed: () => setState(() => action = 'Menu was dismissed'),
           onItemSelected: (item) => setState(() {
             action = '${item.title} was selected';
